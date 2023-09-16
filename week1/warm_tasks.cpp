@@ -183,7 +183,7 @@ static const std::string binFileName = "binfile";
 int saveToBinary(const HarmonicRow& row)
 {
 	
-	std::ofstream binFile(binFileName);
+	std::ofstream binFile(binFileName, std::ios::binary);
 
 	if (!binFile.is_open())
 	{
@@ -200,19 +200,6 @@ int saveToBinary(const HarmonicRow& row)
 	}
 
 	return 0;
-}
-
-int readFromBinary(const HarmonicRow& row)
-{
-	std::ifstream binFile(binFileName);
-
-	if (!binFile.is_open())
-	{
-		std::cerr << "Cant open: " << binFileName << '\n';
-		return 1;
-	}
-
-	// binFile.read();
 }
 
 int main(const int argc, const char* argv[])
