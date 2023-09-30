@@ -3,7 +3,7 @@ todo:
 
 1. Write analytical solution to equation:
 
-	x'' = -w^2 * x
+	x  = -w^2 * x
 
 	<=> reduce it to system of linear differential equations
 
@@ -35,6 +35,8 @@ todo:
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <vector>
+#include <nlohmann/json.hpp>
 
 namespace hos //harmonic oscillator simulator
 {
@@ -44,6 +46,12 @@ namespace hos //harmonic oscillator simulator
 	{
 		float_t x;
 		float_t v;
+	};
+
+		struct Range
+	{
+		float_t t1;
+		float_t t2;
 	};
 
 	std::ostream& operator<< (std::ostream& cout, const Vec2& vec)
@@ -64,42 +72,128 @@ namespace hos //harmonic oscillator simulator
 		return solution;
 	}
 
-	struct Range
+	std::vector<Vec2> getEulerSolution(Vec2 startConds, float_t w, Range tRange, float_t deltaT)
 	{
-		float_t t1;
-		float_t t2;
-	};
+		std::vector<Vec2> solutionVec;
+		solutionVec.reserve((tRange.t2 - tRange.t1) / deltaT);
 
-	void dumpRange(Range tRange, float_t deltaT, Vec2 startConds, float_t w)
+		solutionVec.push_back(startConds);
+		
+		Vec2 prevSolution = startConds;
+
+		for (float_t t = tRange.t1; t < tRange.t2; t += deltaT)
+		{
+			Vec2 currSolution{};
+
+			currSolution.x = prevSolution.x + deltaT * prevSolution.v;
+			currSolution.v = prevSolution.v + deltaT * (-w * w * prevSolution.x);
+
+			solutionVec.push_back(currSolution);
+
+			prevSolution = currSolution;
+		}
+
+		return solutionVec;
+	}
+
+	std::vector<Vec2> getAnalyticalSolution(Vec2 startConds, float_t w, Range tRange, float_t deltaT)
 	{
-		const std::string fileName = "output.bin";
+		std::vector<Vec2> solutionVec;
+		solutionVec.reserve((tRange.t2 - tRange.t1) / deltaT);
 
+		solutionVec.push_back(startConds);
+		
+		for (float_t t = tRange.t1; t < tRange.t2; t += deltaT)
+		{
+			Vec2 currSolution = getAnalyticalSolution(startConds, w, t);
+
+			solutionVec.push_back(currSolution);
+		}
+
+		return solutionVec;
+	}
+
+	void dumpSolutionVec(const std::vector<Vec2>& solutionVec, const std::string& fileName)
+	{
 		std::ofstream fileOutputStream(fileName, std::ios::binary);
 		if (!fileOutputStream)
 		{
 			perror("");
-			std::cerr << "Cant open file for binary output: " << fileName;
+			std::cerr << "Cant open file for binary output: " << fileName << '\n';
 			return;
 		}
 
-		for (float_t t = tRange.t1; t <= tRange.t2; t += deltaT)
-		{
-			Vec2 solution = getAnalyticalSolution(startConds, w, t); // TODO: hardcoded function!
-			std::cout << solution << '\n';
-
-			// TODO: too much write operations!
-			fileOutputStream.write((const char*) &solution, sizeof(solution));
-		}
+		fileOutputStream.write((const char*) &solutionVec[0], solutionVec.size() * sizeof(solutionVec[0]));
 	}
+
+	// class Solver
+	// {
+	// 	const Oscillator oscillator_;
+	// 	const Vec2 startConds_;
+	// 	const Range tRange_;
+	// 	const float_t deltaT_;
+
+	// 	std::vector<Vec2> dataBuffer;
+
+	// 	void computeAnalyticalSolution();
+
+	// 	void computeEulerSolution();
+
+	// public:
+
+	// 	void dumpAnalyticalSolution();
+
+	// 	void dumpEulerSolution;
+	// };
 }
+
+/*
+	This research is devoted to exploring numerical
+	solutions of systems of linear differential equations.
+
+	Every case will be determined by:
+	{
+		w, x0, v0, timeRange
+	}
+
+	These parameteres determine every model startup.
+
+	Oscillator
+	+ w, x0, v0, timeRange
+	+ computeAnalyticalSolution()
+	+ computeEulerSolution()
+	+ computeSimplexSolution()
+	+ dumpSolution
+*/
+
+/*
+	euler method and analytical solution
+	are equal in sample points!
+*/
+
+using json = nlohmann::json;
 
 int main()
 {
-	hos::Vec2 startConds{.x = 0, .v = 1};
-	hos::float_t w = 2 * M_PI;
-	hos::float_t deltaT = 0.01;
+	const std::string configFileName = "config.json";
+	std::ifstream configFileStream(configFileName);
 
-	dumpRange(hos::Range{0., 1.}, deltaT, startConds, w);
+	if (!configFileStream)
+	{
+		perror("");
+		std::cerr << "Cant open config file: " << configFileName << '\n';
+		return 1;
+	}
+
+	json config = json::parse(configFileStream);
+
+	hos::Vec2 startConds{.x = config["x0"], .v = config["v0"]};
+	hos::float_t w = config["w"];
+	hos::Range tRange{config["t1"], config["t2"]};
+	hos::float_t deltaT = config["deltaT"];
+
+	hos::dumpSolutionVec(hos::getAnalyticalSolution(startConds, w, tRange, deltaT), "analytical.bin");
+	hos::dumpSolutionVec(hos::getEulerSolution(startConds, w, tRange, deltaT), "euler.bin");
 
 	return 0;
 }

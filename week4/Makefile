@@ -1,2 +1,9 @@
-all:
-	g++ solver.cpp -o solver.exe
+all: start
+
+solver.exe:
+	g++ solver.cpp -o solver.exe -I./include
+
+start: solver.exe
+	./solver.exe
+	python3.10 plotter.py
+	eog plot.svg
