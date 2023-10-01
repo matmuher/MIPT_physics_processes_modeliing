@@ -59,9 +59,22 @@ todo:
 
 using json = nlohmann::json;
 
-int main()
+std::string getConfigPath(const int argc, const char* argv[])
 {
-	const std::string configFileName = "config.json";
+	const std::string DefaultPath = "config.json";
+
+	if (argc < 2)
+	{
+		return DefaultPath;
+	}
+
+	return argv[1];
+}
+
+int main(const int argc, const char* argv[])
+{
+	const std::string configFileName = getConfigPath(argc, argv);
+
 	std::ifstream configFileStream(configFileName);
 
 	if (!configFileStream)
