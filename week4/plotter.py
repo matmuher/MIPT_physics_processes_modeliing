@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 
 if __name__ == '__main__':
 
-	fileNameEuler = 'euler.bin'
-	fileNameAnalytical = 'analytical.bin'
+	fileNameEuler = 'euler_output.bin'
+	fileNameAnalytical = 'analytical_output.bin'
 
 	xv_dtype = np.dtype([('x', np.float32), ('v', np.float32)])
 	
