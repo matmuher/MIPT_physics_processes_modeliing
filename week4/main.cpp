@@ -1,66 +1,41 @@
-/*
-todo:
-
-1. Write analytical solution to equation:
-
-	x  = -w^2 * x
-
-	<=> reduce it to system of linear differential equations
-
-	/
-	|	x' = v
-	|	v' = -w^2 * x
-	|	x0
-	|	v0
-	\
-
-	Solution is:
-
-	x = A * cos(w * t) + B * sin(w * t)
-	v = -A * w * sin(w * t) + B * w * cos(w * t)
-
-	x(t = 0) = A = x0
-	v(t = 0) = B * w = v0
-
-	x = x0 * cos(w * t) + v0 / w * sin(w * t)
-	v = -x0 * w * sin(w * t) + v0 * cos(w * t)
-
-2. Write numerical solution: Euler method
-
-3. Dump values
-4. Analyzer in python
-*/
-
 #include <fstream>
 #include <string>
+
 #include <nlohmann/json.hpp>
+using json = nlohmann::json;
 
 #include <EulerSolver.hpp>
 #include <AnalyticalSolver.hpp>
 
 /*
-	This research is devoted to exploring numerical
-	solutions of systems of linear differential equations.
+	[x] Implement Analytical solver
 
-	Every case will be determined by:
-	{
-		w, x0, v0, timeRange
-	}
+	[x] Implement Euler method solver
 
-	These parameteres determine every model startup.
+		https://en.wikipedia.org/wiki/Euler_method
 
-	Oscillator
-	+ w, x0, v0, timeRange
-	+ computeAnalyticalSolution()
-	+ computeEulerSolution()
-	+ computeSimplexSolution()
-	+ dumpSolution
+	[x] Plot Euler and Analytical solutions
+
+	[x] Config solvers with json file
+
+	[x] Start solvers from python script
+
+	[] Implement Heun method:
+		
+		https://en.wikipedia.org/wiki/Heun%27s_method
+
+	[] Plot energy
+
+	[] Plot phase diagrams
+
+	[] Assess influence of Kahan summation:
+	
+		https://en.wikipedia.org/wiki/Kahan_summation_algorithm
 */
-
-using json = nlohmann::json;
 
 // TODO: process multiple config paths
 // solver.exe few_samples_config.json many_samples_config.json 
+
 std::string getConfigPath(const int argc, const char* argv[])
 {
 	const std::string DefaultPath = "config.json";

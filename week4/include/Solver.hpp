@@ -41,11 +41,11 @@ namespace hos //harmonic oscillator simulator
 
 	protected:
 
-		const float_t w_; // Oscillator oscillator;
+		const float_t w_; // Create oscillator class that contains all osciallator data
 		const Vec2 startConds_;
 		const Range tRange_;
 
-		// is it ok to name one variable with postfix '_'
+		// Is it ok to name one variable with postfix '_'
 		// and another without it?
 		const float_t deltaT;
 
@@ -57,7 +57,7 @@ namespace hos //harmonic oscillator simulator
 
 		std::vector<Vec2> solutionVec;
 
-		const std::string fileName_; // should it belong to Solver class?
+		const std::string fileName_; // Seems like it shouldn't belong to Solver class
 	};
 
 	Solver::Solver(float_t w, Vec2 startConds, Range tRange, const std::string& fileName)

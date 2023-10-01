@@ -9,4 +9,4 @@ start: solver.exe
 	eog plot.svg
 
 clean:
-	rm *.exe *.o *.bin
+	rm *.exe *.o *.bin *.svg
