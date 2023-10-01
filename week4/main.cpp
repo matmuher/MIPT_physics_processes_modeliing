@@ -59,6 +59,8 @@ todo:
 
 using json = nlohmann::json;
 
+// TODO: process multiple config paths
+// solver.exe few_samples_config.json many_samples_config.json 
 std::string getConfigPath(const int argc, const char* argv[])
 {
 	const std::string DefaultPath = "config.json";
