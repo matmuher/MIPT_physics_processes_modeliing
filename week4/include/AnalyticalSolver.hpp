@@ -32,6 +32,7 @@ namespace hos
 	{
 		Vec2 solution{};
 
+		// TODO: consider  that when t0 != 0 coeffs should differ
 		solution.x = startConds_.x * cos(w_ * t) 		+ startConds_.v / w_ * sin(w_ * t);
 		solution.v = -startConds_.x * w_ * sin(w_ * t) 	+ startConds_.v * cos(w_ * t);
 

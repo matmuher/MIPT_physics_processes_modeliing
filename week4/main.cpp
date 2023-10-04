@@ -6,6 +6,7 @@ using json = nlohmann::json;
 
 #include <EulerSolver.hpp>
 #include <AnalyticalSolver.hpp>
+#include <HeunSolver.hpp>
 
 /*
 	[x] Implement Analytical solver
@@ -69,12 +70,16 @@ int main(const int argc, const char* argv[])
 
 	hos::AnalyticalSolver analyticalSolver{w, startConds, tRange, "analytical_output.bin"};
 	hos::EulerSolver eulerSolver{w, startConds, tRange, "euler_output.bin"};
+	hos::HeunSolver heunSolver{w, startConds, tRange, "heun_output.bin"};
 
 	analyticalSolver.computeSolutions();
 	analyticalSolver.dumpSolutions();
 
 	eulerSolver.computeSolutions();
 	eulerSolver.dumpSolutions();
+
+	heunSolver.computeSolutions();
+	heunSolver.dumpSolutions();
 
 	return 0;
 }

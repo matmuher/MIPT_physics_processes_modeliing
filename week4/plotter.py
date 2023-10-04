@@ -16,14 +16,18 @@ def plot_solver_data(config_name):
 
 	analytical_xv_data = read_solver_data('analytical_output.bin')
 	euler_xv_data = read_solver_data('euler_output.bin')
+	heun_xv_data = read_solver_data('heun_output.bin')
 
 	t_sample_list = range(0, euler_xv_data.size)
 
-	ax.plot(t_sample_list, analytical_xv_data['x'], label = 'analytical x')
-	ax.plot(t_sample_list, analytical_xv_data['v'], label = 'analytical v')
+	ax.plot(t_sample_list, analytical_xv_data['x'], label = 'analytical x') # wrap plotting rouitine
+	ax.plot(t_sample_list, analytical_xv_data['v'], label = 'analytical v') # into function / class
 
 	ax.plot(t_sample_list, euler_xv_data['x'], label = 'euler x')
 	ax.plot(t_sample_list, euler_xv_data['v'], label = 'euler v')
+
+	ax.plot(t_sample_list, heun_xv_data['x'], label = 'heun x')
+	ax.plot(t_sample_list, heun_xv_data['v'], label = 'heun v')
 
 	ax.set_title(config_name)
 	ax.legend()
