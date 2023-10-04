@@ -21,13 +21,15 @@ using json = nlohmann::json;
 
 	[x] Start solvers from python script
 
-	[] Implement Heun method:
+	[x] Implement Heun method:
 		
 		https://en.wikipedia.org/wiki/Heun%27s_method
 
 	[] Plot energy
 
 	[] Plot phase diagrams
+
+	[] Add Equation class
 
 	[] Assess influence of Kahan summation:
 	
@@ -65,12 +67,12 @@ int main(const int argc, const char* argv[])
 	json config = json::parse(configFileStream);
 
 	hos::Vec2 startConds{.x = config["x0"], .v = config["v0"]};
-	hos::float_t w = config["w"];
+	hos::HarmonicOscillator hOs{config["w"]};
 	hos::Range tRange{config["t1"], config["t2"], config["sampleNum"]};
 
-	hos::AnalyticalSolver analyticalSolver{w, startConds, tRange, "analytical_output.bin"};
-	hos::EulerSolver eulerSolver{w, startConds, tRange, "euler_output.bin"};
-	hos::HeunSolver heunSolver{w, startConds, tRange, "heun_output.bin"};
+	hos::AnalyticalSolver analyticalSolver{hOs, startConds, tRange, "analytical_output.bin"};
+	hos::EulerSolver eulerSolver{hOs, startConds, tRange, "euler_output.bin"};
+	hos::HeunSolver heunSolver{hOs, startConds, tRange, "heun_output.bin"};
 
 	analyticalSolver.computeSolutions();
 	analyticalSolver.dumpSolutions();

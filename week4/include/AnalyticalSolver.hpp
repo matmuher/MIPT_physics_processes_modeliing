@@ -12,9 +12,9 @@ namespace hos
 
 	public:
 
-		AnalyticalSolver(float_t w, Vec2 startConds, Range tRange, const std::string& fileName)
+		AnalyticalSolver(HarmonicOscillator hOs, Vec2 startConds, Range tRange, const std::string& fileName)
 		:
-			Solver{w, startConds, tRange, fileName}
+			Solver{hOs, startConds, tRange, fileName}
 		{}
 	};
 
@@ -33,6 +33,8 @@ namespace hos
 		Vec2 solution{};
 
 		// TODO: consider  that when t0 != 0 coeffs should differ
+		
+		float_t w_ = hOs_.w();
 		solution.x = startConds_.x * cos(w_ * t) 		+ startConds_.v / w_ * sin(w_ * t);
 		solution.v = -startConds_.x * w_ * sin(w_ * t) 	+ startConds_.v * cos(w_ * t);
 

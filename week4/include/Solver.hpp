@@ -6,23 +6,10 @@
 #include <vector>
 #include <string>
 
+#include <HarmonicOscillator.hpp>
+
 namespace hos //harmonic oscillator simulator
 {
-	using float_t = float;
-
-	struct Vec2
-	{
-		float_t x;
-		float_t v;
-	};
-
-		struct Range
-	{
-		float_t t1;
-		float_t t2;
-		size_t sampleNum;
-	};
-
 	std::ostream& operator<< (std::ostream& cout, const Vec2& vec)
 	{
 		cout << '[' << vec.x << ',' << vec.v << ']';
@@ -33,7 +20,7 @@ namespace hos //harmonic oscillator simulator
 	{
 	public:
 
-		Solver(float_t w, Vec2 startConds, Range tRange, const std::string& fileName);
+		Solver(HarmonicOscillator hOs, Vec2 startConds, Range tRange, const std::string& fileName);
 	
 		void computeSolutions();
 
@@ -41,7 +28,7 @@ namespace hos //harmonic oscillator simulator
 
 	protected:
 
-		const float_t w_; // Create oscillator class that contains all osciallator data
+		HarmonicOscillator hOs_;
 		const Vec2 startConds_;
 		const Range tRange_;
 
@@ -60,9 +47,9 @@ namespace hos //harmonic oscillator simulator
 		const std::string fileName_; // Seems like it shouldn't belong to Solver class
 	};
 
-	Solver::Solver(float_t w, Vec2 startConds, Range tRange, const std::string& fileName)
+	Solver::Solver(HarmonicOscillator hOs, Vec2 startConds, Range tRange, const std::string& fileName)
 	:
-		w_{w},
+		hOs_{hOs},
 		startConds_{startConds},
 		tRange_{tRange},
 		deltaT{(tRange.t2 - tRange.t1) / tRange.sampleNum},

@@ -10,9 +10,9 @@ namespace hos
 
 	public:
 
-		EulerSolver(float_t w, Vec2 startConds, Range tRange, const std::string& fileName)
+		EulerSolver(HarmonicOscillator hOs, Vec2 startConds, Range tRange, const std::string& fileName)
 		:
-			Solver{w, startConds, tRange, fileName}
+			Solver{hOs, startConds, tRange, fileName}
 		{}
 	};
 
@@ -38,8 +38,8 @@ namespace hos
 		{
 			Vec2 currSolution{};
 
-			currSolution.x = prevSolution.x + deltaT * prevSolution.v;
-			currSolution.v = prevSolution.v + deltaT * (-w_ * w_ * prevSolution.x);
+			currSolution.x = prevSolution.x + deltaT * hOs_.f1(prevSolution);
+			currSolution.v = prevSolution.v + deltaT * hOs_.f2(prevSolution);
 
 			addSolution(currSolution);
 

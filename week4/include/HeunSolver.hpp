@@ -10,9 +10,9 @@ namespace hos
 
 	public:
 
-		HeunSolver(float_t w, Vec2 startConds, Range tRange, const std::string& fileName)
+		HeunSolver(HarmonicOscillator hOs, Vec2 startConds, Range tRange, const std::string& fileName)
 		:
-			Solver{w, startConds, tRange, fileName}
+			Solver{hOs, startConds, tRange, fileName}
 		{}
 	};
 
@@ -25,8 +25,8 @@ namespace hos
 			Vec2 intermediateSolution{};
 
 			// y_{k+1} = y_{k} + deltaT * f(y_{k})
-			intermediateSolution.x = prevSolution.x + deltaT * prevSolution.v;
-			intermediateSolution.v = prevSolution.v + deltaT * (-w_ * w_ * prevSolution.x);
+			intermediateSolution.x = prevSolution.x + deltaT * hOs_.f1(prevSolution);
+			intermediateSolution.v = prevSolution.v + deltaT * hOs_.f2(prevSolution);
 			//        -------------------------------------------------------^
 			//        |
 			// It's easy to make a mistake in formulas f(y_{k}) part
@@ -35,10 +35,10 @@ namespace hos
 			Vec2 currSolution{};
 
 			currSolution.x =	prevSolution.x +
-							 	deltaT / 2 * (prevSolution.v + intermediateSolution.v);
+							 	deltaT / 2 * (hOs_.f1(prevSolution) + hOs_.f1(intermediateSolution));
 
 			currSolution.v = 	prevSolution.v +
-							 	deltaT / 2 * (-w_ * w_ * prevSolution.x + -w_ * w_ * intermediateSolution.x);
+							 	deltaT / 2 * (hOs_.f2(prevSolution) + hOs_.f2(intermediateSolution));
 
 			addSolution(currSolution);
 
