@@ -60,7 +60,7 @@ def plot_phase_diagram(ax, methods):
 
 def plot_energy(ax, methods):
 
-	ax.set_ylabel('System energy comparison')
+	ax.set_title('System energy comparison')
 	ax.set_xlabel('time samples')
 	ax.set_ylabel('energy')	
 

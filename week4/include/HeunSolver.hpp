@@ -24,16 +24,13 @@ namespace hos
 		{
 			Vec2 intermediateSolution{};
 
-			// y_{k+1} = y_{k} + deltaT * f(y_{k})
+			// y*_{k+1} = y_{k} + deltaT * f(y_{k})
 			intermediateSolution.x = prevSolution.x + deltaT * hOs_.f1(prevSolution);
 			intermediateSolution.v = prevSolution.v + deltaT * hOs_.f2(prevSolution);
-			//        -------------------------------------------------------^
-			//        |
-			// It's easy to make a mistake in formulas f(y_{k}) part
-			// It's better tp wrap initial equation in class
 
 			Vec2 currSolution{};
 
+			// y_{k+1} = y_{k} + deltaT / 2 * (f(y_{k} + f(y*_{k+1}))
 			currSolution.x =	prevSolution.x +
 							 	deltaT / 2 * (hOs_.f1(prevSolution) + hOs_.f1(intermediateSolution));
 
