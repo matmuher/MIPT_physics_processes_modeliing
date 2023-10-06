@@ -34,6 +34,24 @@ class MethodData:
 					label = self.name + ' x',
 					marker = self.marker)
 
+	def plot_error(self, ax, other):
+
+		if self.data.size != other.data.size:
+
+			raise Exception(f'Data not matches for {self.name} and {other.name}')
+
+		t_sample_list = range(0, self.data.size)
+		
+		ax.plot(t_sample_list,
+				np.abs(self.data['x'] - other.data['x']),
+				label =  'x error: ' + self.name + ' and ' + other.name,
+				marker = self.marker)
+		
+		ax.plot(t_sample_list,
+				np.abs(self.data['v'] - other.data['v']),
+				label = 'v error: ' + self.name + ' and ' + other.name,
+				marker = self.marker)
+
 	def plot_phase_diagram(self, ax):
 
 		ax.plot(self.data['x'], self.data['v'], label = self.name + ' v', marker = self.marker)
@@ -68,6 +86,18 @@ def plot_energy(ax, methods):
 
 		method.plot_energy(ax)
 
+def plot_error(ax, methods):
+
+	ax.set_title('Errors comparison')
+	ax.set_xlabel('time samples')
+	ax.set_ylabel('abs(error)')	
+
+	analytic = methods[0]
+
+	for i in range(1, len(methods)):
+
+		methods[i].plot_error(ax, analytic);
+
 class PlotFunction:
 
 	def __init__(self, name, function):
@@ -98,13 +128,14 @@ def plot_solver_data(config_name):
 	methods = 	[	
 					MethodData('analytic', 'analytical_output.bin', '|'),
 					MethodData('heun', 'heun_output.bin', 'o'),
-					MethodData('euler', 'euler_output.bin', '^')
+					# MethodData('euler', 'euler_output.bin', '^')
 				]
 	
 	plot_functions = 	[
 						PlotFunction('solution', plot_solution),
 						PlotFunction('energy', plot_energy),
-						PlotFunction('phase_diagram', plot_phase_diagram)
+						PlotFunction('phase_diagram', plot_phase_diagram),
+						PlotFunction('error', plot_error)
 						]
 
 	save_plots_to_pictures(config_name, plot_functions, methods)
