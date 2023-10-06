@@ -128,7 +128,7 @@ def plot_solver_data(config_name):
 	methods = 	[	
 					MethodData('analytic', 'analytical_output.bin', '|'),
 					MethodData('heun', 'heun_output.bin', 'o'),
-					# MethodData('euler', 'euler_output.bin', '^')
+					MethodData('euler', 'euler_output.bin', '^')
 				]
 	
 	plot_functions = 	[
@@ -138,7 +138,7 @@ def plot_solver_data(config_name):
 						PlotFunction('error', plot_error)
 						]
 
-	save_plots_to_pictures(config_name, plot_functions, methods)
+	save_plots_to_pictures(config_name, plot_functions, methods) # TODO create tmp dir and save plot there
 
 class ConfigInfo:
 
@@ -152,8 +152,8 @@ if __name__ == '__main__':
 	executable_name = './solver.exe'
 	
 	configs = 	[
-				ConfigInfo('few_samples', 'few_samples_config.json'),
-				ConfigInfo('many_samples', 'many_samples_config.json')
+				ConfigInfo('few_samples', 'configs/few_samples_config.json'),
+				ConfigInfo('many_samples', 'configs/many_samples_config.json')
 				]
 
 	for config in configs:
