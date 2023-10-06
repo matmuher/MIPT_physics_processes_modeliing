@@ -22,7 +22,7 @@ namespace hos
 	{
 		for (float_t t = tRange_.t1; t < tRange_.t2; t += deltaT)
 		{
-			Vec2 currSolution = getSolution(t);
+			Vec2 currSolution = getSolution(t + deltaT);
 
 			addSolution(currSolution);
 		}

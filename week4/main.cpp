@@ -25,9 +25,13 @@ using json = nlohmann::json;
 		
 		https://en.wikipedia.org/wiki/Heun%27s_method
 
-	[] Plot energy
+	[x] Plot energy
 
-	[] Plot phase diagrams
+	[x] Plot phase diagrams
+
+	[] Reasearch domain
+
+	[] Analyze errors of methods
 
 	[] Add Equation class
 
