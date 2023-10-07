@@ -7,6 +7,7 @@ using json = nlohmann::json;
 #include <EulerSolver.hpp>
 #include <AnalyticalSolver.hpp>
 #include <HeunSolver.hpp>
+#include <RK4Solver.hpp>
 
 /*
 	[x] Implement Analytical solver
@@ -77,6 +78,7 @@ int main(const int argc, const char* argv[])
 	hos::AnalyticalSolver analyticalSolver{hOs, startConds, tRange, "analytical_output.bin"};
 	hos::EulerSolver eulerSolver{hOs, startConds, tRange, "euler_output.bin"};
 	hos::HeunSolver heunSolver{hOs, startConds, tRange, "heun_output.bin"};
+	hos::RK4Solver rk4Solver{hOs, startConds, tRange, "rk4_output.bin"};
 
 	analyticalSolver.computeSolutions();
 	analyticalSolver.dumpSolutions();
@@ -86,6 +88,9 @@ int main(const int argc, const char* argv[])
 
 	heunSolver.computeSolutions();
 	heunSolver.dumpSolutions();
+
+	rk4Solver.computeSolutions();
+	rk4Solver.dumpSolutions();
 
 	return 0;
 }

@@ -20,10 +20,14 @@ class MethodData:
 
 		self.data = read_solver_data(binary_file);
 
-	def plot_solution(self, ax):
+	def plot_x(self, ax):
 
 		t_sample_list = range(0, self.data.size)
 		ax.plot(t_sample_list, self.data['x'], label = self.name + ' x', marker = self.marker)
+
+	def plot_v(self, ax):
+
+		t_sample_list = range(0, self.data.size)
 		ax.plot(t_sample_list, self.data['v'], label = self.name + ' v', marker = self.marker)
 
 	def plot_energy(self, ax):
@@ -56,15 +60,25 @@ class MethodData:
 
 		ax.plot(self.data['x'], self.data['v'], label = self.name + ' v', marker = self.marker)
 
-def plot_solution(ax, methods):
+def plot_x(ax, methods):
 
-	ax.set_title('Solutions comparison')
+	ax.set_title('Coord comparison')
 	ax.set_xlabel('time samples')
-	ax.set_ylabel('x & v')	
+	ax.set_ylabel('x')	
 
 	for method in methods:
 
-		method.plot_solution(ax)
+		method.plot_x(ax)
+
+def plot_v(ax, methods):
+
+	ax.set_title('Velocity comparison')
+	ax.set_xlabel('time samples')
+	ax.set_ylabel('v')	
+
+	for method in methods:
+
+		method.plot_v(ax)
 
 def plot_phase_diagram(ax, methods):
 
@@ -92,9 +106,9 @@ def plot_error(ax, methods):
 	ax.set_xlabel('time samples')
 	ax.set_ylabel('abs(error)')	
 
-	analytic = methods[0]
+	analytic = methods[-1]
 
-	for i in range(1, len(methods)):
+	for i in range(0, len(methods)-1):
 
 		methods[i].plot_error(ax, analytic);
 
@@ -126,13 +140,15 @@ def plot_solver_data(config_name):
 	fig, axs = plt.subplots(1, 3, figsize = (30, 10))
 
 	methods = 	[	
-					MethodData('analytic', 'analytical_output.bin', '|'),
-					MethodData('heun', 'heun_output.bin', 'o'),
-					MethodData('euler', 'euler_output.bin', '^')
+					MethodData('rk4', 'rk4_output.bin', 's'),
+					# MethodData('heun', 'heun_output.bin', 'o'),
+					# MethodData('euler', 'euler_output.bin', '^'),
+					MethodData('analytic', 'analytical_output.bin', '|')
 				]
 	
 	plot_functions = 	[
-						PlotFunction('solution', plot_solution),
+						PlotFunction('x', plot_x),
+						PlotFunction('v', plot_v),
 						PlotFunction('energy', plot_energy),
 						PlotFunction('phase_diagram', plot_phase_diagram),
 						PlotFunction('error', plot_error)
