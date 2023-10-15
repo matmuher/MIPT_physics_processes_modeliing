@@ -26,7 +26,7 @@ namespace hos
 
 			// y*_{k+1} = y_{k} + deltaT * f(y_{k})
 			intermediateSolution.x = prevSolution.x + deltaT * hOs_.f1(prevSolution);
-			intermediateSolution.v = prevSolution.v + deltaT * hOs_.f2(prevSolution);
+			intermediateSolution.y= prevSolution.y+ deltaT * hOs_.f2(prevSolution);
 
 			Vec2 currSolution{};
 
@@ -34,7 +34,7 @@ namespace hos
 			currSolution.x =	prevSolution.x +
 							 	deltaT / 2 * (hOs_.f1(prevSolution) + hOs_.f1(intermediateSolution));
 
-			currSolution.v = 	prevSolution.v +
+			currSolution.y= 	prevSolution.y+
 							 	deltaT / 2 * (hOs_.f2(prevSolution) + hOs_.f2(intermediateSolution));
 
 			addSolution(currSolution);

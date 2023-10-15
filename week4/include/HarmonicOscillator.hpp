@@ -17,7 +17,7 @@ namespace hos
 
 		float_t f1(Vec2 vec) const // ?? Different types of oscillators should describe their equations
 		{
-			return vec.v;
+			return vec.y;
 		}
 
 		float_t f2(Vec2 vec) const

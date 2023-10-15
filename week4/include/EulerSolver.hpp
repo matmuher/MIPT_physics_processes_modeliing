@@ -39,7 +39,7 @@ namespace hos
 			Vec2 currSolution{};
 
 			currSolution.x = prevSolution.x + deltaT * hOs_.f1(prevSolution);
-			currSolution.v = prevSolution.v + deltaT * hOs_.f2(prevSolution);
+			currSolution.y= prevSolution.y+ deltaT * hOs_.f2(prevSolution);
 
 			addSolution(currSolution);
 

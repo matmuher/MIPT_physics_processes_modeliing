@@ -1,5 +1,6 @@
 #include <fstream>
 #include <string>
+#include <vector>
 
 #include <nlohmann/json.hpp>
 using json = nlohmann::json;
@@ -10,30 +11,48 @@ using json = nlohmann::json;
 #include <RK4Solver.hpp>
 
 /*
-	[x] Implement Analytical solver
+	We want to process with Euler method
+	different systems:
 
-	[x] Implement Euler method solver
+		equation: different right hands
 
-		https://en.wikipedia.org/wiki/Euler_method
+			+ v' = f1(x, y)
+			+ x' = f2(x, y)
 
-	[x] Plot Euler and Analytical solutions
+		condition
 
-	[x] Config solvers with json file
+		method
 
-	[x] Start solvers from python script
+			+ Euler, RK4...
 
-	[x] Implement Heun method:
-		
-		https://en.wikipedia.org/wiki/Heun%27s_method
+	Condition of system:
 
-	[x] Plot energy
+		+ (x, v, t)
 
-	[x] Plot phase diagrams
+	Upcoming features:
 
-	[] Reasearch domain
+		[] Make N dimensions arithmetic
 
-	[] Analyze errors of methods
+		[] Make equation more abstract to easily add new essence to system
 
+		[] Make solver able to solve equations of random order and any nature
+
+		[] Make wrapper for condition that allows one-way traversing
+
+
+	!! Oscillator !! - essence that contains Equations:
+
+	std::array<equ_type, 2> harmonic_oscillator_equation_set = {f1, f2};
+	Oscillator harmonic_oscillator{harmonic_oscillator_equation_set};
+
+	Oscillator oscillator{harmonic_oscillator_equation_set};
+
+	!! Solver !!
+
+	currentVec = Oscillator.getVec(prevVec, t);
+*/
+
+/*
 	[] Add Equation class
 
 	[] Assess influence of Kahan summation:
@@ -56,8 +75,55 @@ std::string getConfigPath(const int argc, const char* argv[])
 	return argv[1];
 }
 
+#include <functional>
+
+namespace hos
+{
+
+template<class T, int N>
+struct funct_vec_t
+{
+	vec<std::function<T(vec<T, N>)>, N> store;
+
+	std::function<T(vec<T,N>)>& operator[] (int k)
+	{
+		if (k < N)
+		{
+			return store[k];
+		}
+		else
+		{
+			std::cerr << "cant apply to k func\n";
+		}
+	}
+
+};
+
+};
+
+float f1(hos::vec<float, 2> v)
+{
+	return v.x + v.y;
+}
+
+float f2(hos::vec<float, 2> v)
+{
+	return v.x - v.y;
+}
+
 int main(const int argc, const char* argv[])
 {
+	hos::funct_vec_t<float, 2> fvec;
+
+	fvec[0] = f1;
+	fvec[1] = f2;
+
+	hos::vec<float, 2> ma_vec{2, 2};
+
+	std::cout << fvec[0](ma_vec) << ' ' << fvec[1](ma_vec) << '\n';
+
+	exit(1);
+
 	const std::string configFileName = getConfigPath(argc, argv);
 
 	std::ifstream configFileStream(configFileName);
@@ -71,7 +137,7 @@ int main(const int argc, const char* argv[])
 
 	json config = json::parse(configFileStream);
 
-	hos::Vec2 startConds{.x = config["x0"], .v = config["v0"]};
+	hos::Vec2 startConds{config["x0"], config["v0"]};
 	hos::HarmonicOscillator hOs{config["w"]};
 	hos::Range tRange{config["t1"], config["t2"], config["sampleNum"]};
 
@@ -80,17 +146,18 @@ int main(const int argc, const char* argv[])
 	hos::HeunSolver heunSolver{hOs, startConds, tRange, "heun_output.bin"};
 	hos::RK4Solver rk4Solver{hOs, startConds, tRange, "rk4_output.bin"};
 
-	analyticalSolver.computeSolutions();
-	analyticalSolver.dumpSolutions();
+	std::vector<hos::Solver*> solvers;
 
-	eulerSolver.computeSolutions();
-	eulerSolver.dumpSolutions();
+	solvers.push_back(&analyticalSolver);
+	solvers.push_back(&eulerSolver);
+	solvers.push_back(&heunSolver);
+	solvers.push_back(&rk4Solver); 
 
-	heunSolver.computeSolutions();
-	heunSolver.dumpSolutions();
-
-	rk4Solver.computeSolutions();
-	rk4Solver.dumpSolutions();
+	for (size_t solverId = 0; solverId < solvers.size(); solverId++)
+	{
+		solvers[solverId]->computeSolutions();
+		solvers[solverId]->dumpSolutions();
+	}
 
 	return 0;
 }

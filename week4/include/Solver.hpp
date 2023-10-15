@@ -12,7 +12,7 @@ namespace hos //harmonic oscillator simulator
 {
 	std::ostream& operator<< (std::ostream& cout, const Vec2& vec)
 	{
-		cout << '[' << vec.x << ',' << vec.v << ']';
+		cout << '[' << vec.x << ',' << vec.y<< ']';
 		return cout;
 	}
 

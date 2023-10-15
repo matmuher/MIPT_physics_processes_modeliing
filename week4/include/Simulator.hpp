@@ -1,16 +1,16 @@
 #pragma once
 
+#include <array>
+#include <linalg.h>
+
 namespace hos //harmonic oscillator simulator
-{
-	using float_t = float;
+{		
+	using namespace linalg::ostream_overloads;
+	using namespace linalg;
 
-	struct Vec2
-	{
-		float_t x;
-		float_t v;
-	};
+	using Vec2 = vec<float_t, 2>;
 
-		struct Range
+	struct Range
 	{
 		float_t t1;
 		float_t t2;
