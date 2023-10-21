@@ -1,7 +1,7 @@
 all: start
 
 solver.exe: main.cpp
-	g++ main.cpp -o solver.exe -I./include
+	g++ main.cpp -o solver.exe -I./include -std=c++11
 
 start: solver.exe
 

@@ -80,50 +80,20 @@ std::string getConfigPath(const int argc, const char* argv[])
 namespace hos
 {
 
-template<class T, int N>
-struct funct_vec_t
-{
-	vec<std::function<T(vec<T, N>)>, N> store;
-
-	std::function<T(vec<T,N>)>& operator[] (int k)
-	{
-		if (k < N)
-		{
-			return store[k];
-		}
-		else
-		{
-			std::cerr << "cant apply to k func\n";
-		}
-	}
-
 };
 
-};
-
-float f1(hos::vec<float, 2> v)
+float f1(hos::vec<float, 2> v, float t)
 {
 	return v.x + v.y;
 }
 
-float f2(hos::vec<float, 2> v)
+float f2(hos::vec<float, 2> v, float t)
 {
 	return v.x - v.y;
 }
 
 int main(const int argc, const char* argv[])
 {
-	hos::funct_vec_t<float, 2> fvec;
-
-	fvec[0] = f1;
-	fvec[1] = f2;
-
-	hos::vec<float, 2> ma_vec{2, 2};
-
-	std::cout << fvec[0](ma_vec) << ' ' << fvec[1](ma_vec) << '\n';
-
-	exit(1);
-
 	const std::string configFileName = getConfigPath(argc, argv);
 
 	std::ifstream configFileStream(configFileName);

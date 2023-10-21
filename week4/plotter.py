@@ -140,9 +140,9 @@ def plot_solver_data(config_name):
 	fig, axs = plt.subplots(1, 3, figsize = (30, 10))
 
 	methods = 	[	
-					MethodData('rk4', 'rk4_output.bin', 's'),
+					# MethodData('rk4', 'rk4_output.bin', 's'),
 					# MethodData('heun', 'heun_output.bin', 'o'),
-					# MethodData('euler', 'euler_output.bin', '^'),
+					MethodData('euler', 'euler_output.bin', '^'),
 					MethodData('analytic', 'analytical_output.bin', '|')
 				]
 	
@@ -174,5 +174,5 @@ if __name__ == '__main__':
 
 	for config in configs:
 
-		subprocess.run([executable_name, config.path])
+		subprocess.run([executable_name, config.path]) # TODO popen
 		plot_solver_data(config.name)
