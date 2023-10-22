@@ -10,12 +10,15 @@ namespace hos //harmonic oscillator simulator
 
 	using Vec2 = vec<float_t, 2>;
 
-	struct Range
+	template<class T>
+	struct RangeT
 	{
-		float_t t1;
-		float_t t2;
-		size_t sampleNum;
+		T t1;
+		T t2;
+		size_t sampleNum;	
 	};
+
+	using Range = RangeT<float_t>;
 
 	template<class T, int N>
 	using FuncType = std::function<T(vec<T, N>, T)>; 
@@ -34,11 +37,11 @@ namespace hos //harmonic oscillator simulator
 			else
 			{
 				std::cerr << "Cant apply to " << k << "th func\n";
-				// throw
+				// TODO: throw
 			}
 		}
 
-		FuncType<T, N>& operator[] (int k) // COPYPASTE
+		FuncType<T, N>& operator[] (int k) // TODO: COPYPASTE
 		{
 			if (k < N)
 			{
@@ -63,7 +66,7 @@ namespace hos //harmonic oscillator simulator
 			funcVector_{funcVector}
 		{}
 
-		vec<T, N> f(const vec<T, N>& stateVec, T t) const
+		vec<T, N> f(const vec<T, N>& stateVec, T t = 0) const
 		{
 			vec<T, N> result{};
 

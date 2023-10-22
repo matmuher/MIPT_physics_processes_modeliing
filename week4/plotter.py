@@ -140,10 +140,10 @@ def plot_solver_data(config_name):
 	fig, axs = plt.subplots(1, 3, figsize = (30, 10))
 
 	methods = 	[	
-					# MethodData('rk4', 'rk4_output.bin', 's'),
-					# MethodData('heun', 'heun_output.bin', 'o'),
+					MethodData('rk4', 'rk4_output.bin', 's'),
+					MethodData('heun', 'heun_output.bin', 'o'),
 					MethodData('euler', 'euler_output.bin', '^'),
-					MethodData('analytic', 'analytical_output.bin', '|')
+					# MethodData('analytic', 'analytical_output.bin', '|')
 				]
 	
 	plot_functions = 	[
@@ -151,7 +151,7 @@ def plot_solver_data(config_name):
 						PlotFunction('v', plot_v),
 						PlotFunction('energy', plot_energy),
 						PlotFunction('phase_diagram', plot_phase_diagram),
-						PlotFunction('error', plot_error)
+						# PlotFunction('error', plot_error)
 						]
 
 	save_plots_to_pictures(config_name, plot_functions, methods) # TODO create tmp dir and save plot there

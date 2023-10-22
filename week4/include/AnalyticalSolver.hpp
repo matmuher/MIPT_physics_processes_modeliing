@@ -34,9 +34,9 @@ namespace hos
 
 		// TODO: consider  that when t0 != 0 coeffs should differ
 		
-		float_t w_ = hOs_.w();
-		solution.x = startConds_.x * cos(w_ * t) 		+ startConds_.y/ w_ * sin(w_ * t);
-		solution.y= -startConds_.x * w_ * sin(w_ * t) 	+ startConds_.y* cos(w_ * t);
+		// float_t w_ = hOs_.w();
+		// solution.x = startConds_.x * cos(w_ * t) 		+ startConds_.y/ w_ * sin(w_ * t);
+		// solution.y= -startConds_.x * w_ * sin(w_ * t) 	+ startConds_.y* cos(w_ * t);
 
 		return solution;
 	}

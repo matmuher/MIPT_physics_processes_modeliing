@@ -111,14 +111,14 @@ int main(const int argc, const char* argv[])
 	hos::HarmonicOscillator hOs{config["w"]};
 	hos::Range tRange{config["t1"], config["t2"], config["sampleNum"]};
 
-	hos::AnalyticalSolver analyticalSolver{hOs, startConds, tRange, "analytical_output.bin"};
+	// hos::AnalyticalSolver analyticalSolver{hOs, startConds, tRange, "analytical_output.bin"};
 	hos::EulerSolver eulerSolver{hOs, startConds, tRange, "euler_output.bin"};
 	hos::HeunSolver heunSolver{hOs, startConds, tRange, "heun_output.bin"};
 	hos::RK4Solver rk4Solver{hOs, startConds, tRange, "rk4_output.bin"};
 
 	std::vector<hos::Solver*> solvers;
 
-	solvers.push_back(&analyticalSolver);
+	// solvers.push_back(&analyticalSolver);
 	solvers.push_back(&eulerSolver);
 	solvers.push_back(&heunSolver);
 	solvers.push_back(&rk4Solver); 
