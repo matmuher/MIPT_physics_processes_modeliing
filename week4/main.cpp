@@ -12,6 +12,7 @@ using json = nlohmann::json;
 
 #include <HarmonicSystem.hpp>
 #include <PhysicSystem.hpp>
+#include <DampedSystem.hpp>
 
 // TODO: process multiple config paths
 // solver.exe few_samples_config.json many_samples_config.json 
@@ -28,38 +29,26 @@ std::string getConfigPath(const int argc, const char* argv[])
 	return argv[1];
 }
 
-/*
-	Задача: в зависимости от конфиг файла конструировать
-	модель опредленного типа
-
-	1) Обернуть в умный указатель
-
-	2) Создать Oscillator'ы как статические переменные
-	и выдать ссылки на них (синглтон) 
-
-	Это адекватная идея параметризовать каждый запуск опредленной моделью?
-	Или лучше прогонять через все модели сразу?
-*/
 const hos::DiffEqSystem<float, 2>& getDifEqSystem(const json& config)
 {
 	const std::string modelName = config["model"];
 
 	if (modelName == "Harmonic")
 	{
-		return hos::HarmonicOscillatorT<float>::getDiffEqSystem(config["w"]);
+		return hos::HarmonicOscillator::getDiffEqSystem(config["w"]);
 	}
 
 	if (modelName == "Physic")
 	{
-		return hos::PhysicsOscillatorT<float>::getDiffEqSystem(config["w"]);
+		return hos::PhysicsOscillator::getDiffEqSystem(config["w"]);
 	}
 
-	// if (modelName == "Damped")
-	// {
-	// 	return hos::DampedOscillator{config["w"], config["damp_ratio"]};
-	// }
+	if (modelName == "Damped")
+	{
+		return hos::DampedOscillator::getDiffEqSystem(config["w"], config["damp_ratio"]);
+	}
 
-	return hos::HarmonicOscillatorT<float>::getDiffEqSystem(config["w"]);
+	return hos::HarmonicOscillator::getDiffEqSystem(config["w"]);
 }
 
 int main(const int argc, const char* argv[])

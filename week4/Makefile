@@ -7,5 +7,13 @@ start: solver.exe
 
 	python3.10 plotter.py
 
-clean:
-	rm *.exe *.o *.bin *.svg
+clean: clean_meta clean_bin
+	rm *.exe *.o
+	
+clean_meta:
+
+	rm tmp -rf *.svg
+
+clean_bin:
+
+	rm *.bin

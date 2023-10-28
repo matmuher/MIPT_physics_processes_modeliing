@@ -1,8 +1,12 @@
 {
-	"model" : "Physic",
+	"model" : "Harmonic",
+
+	"m" : 1,
 	"w" : 1,
+	
 	"x0" : 0, 
-	"v0" : 1,
+	"v0" : 1.5,
+	
 	"t1" : 0,
 	"t2" : 6.28,
 	"sampleNum" : 100
