@@ -1,9 +1,9 @@
 {
-	"model" : "Harmonic",
+	"model" : "Physic",
 	"w" : 1,
 	"x0" : 0, 
 	"v0" : 1,
 	"t1" : 0,
 	"t2" : 6.28,
-	"sampleNum" : 10
+	"sampleNum" : 100
 }

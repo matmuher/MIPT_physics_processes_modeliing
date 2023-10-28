@@ -1,5 +1,6 @@
 #pragma once
 
+#include <HarmonicSystem.hpp>
 #include <Solver.hpp>
 
 namespace hos

@@ -141,17 +141,17 @@ def plot_solver_data(config_name):
 
 	methods = 	[	
 					MethodData('rk4', 'rk4_output.bin', 's'),
-					MethodData('heun', 'heun_output.bin', 'o'),
-					MethodData('euler', 'euler_output.bin', '^'),
-					MethodData('analytic', 'analytical_output.bin', '|')
+					# MethodData('heun', 'heun_output.bin', 'o'),
+					# MethodData('euler', 'euler_output.bin', '^'),
+					# MethodData('analytic', 'analytical_output.bin', '|')
 				]
 	
 	plot_functions = 	[
 						PlotFunction('x', plot_x),
-						PlotFunction('v', plot_v),
-						PlotFunction('energy', plot_energy),
-						PlotFunction('phase_diagram', plot_phase_diagram),
-						PlotFunction('error', plot_error)
+						# PlotFunction('v', plot_v),
+						# PlotFunction('energy', plot_energy),
+						# PlotFunction('phase_diagram', plot_phase_diagram),
+						# PlotFunction('error', plot_error)
 						]
 
 	save_plots_to_pictures(config_name, plot_functions, methods) # TODO create tmp dir and save plot there
@@ -168,8 +168,8 @@ if __name__ == '__main__':
 	executable_name = './solver.exe'
 	
 	configs = 	[
-				ConfigInfo('few_samples', 'configs/few_samples_config.json'),
-				ConfigInfo('many_samples', 'configs/many_samples_config.json')
+				ConfigInfo('harmonic_many_samples', 'configs/many_samples_config.json'),
+				ConfigInfo('physic_many_samples', 'configs/physic_many_samples_config .json')
 				]
 
 	for config in configs:
