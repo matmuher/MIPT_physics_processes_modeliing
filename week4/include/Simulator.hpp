@@ -15,7 +15,7 @@ namespace hos //harmonic oscillator simulator
 	{
 		T t1;
 		T t2;
-		size_t sampleNum;	
+		size_t sampleNum;
 	};
 
 	using Range = RangeT<float_t>;
@@ -50,6 +50,7 @@ namespace hos //harmonic oscillator simulator
 			else
 			{
 				std::cerr << "Cant apply to " << k << "th func\n";
+				// TODO; throw
 			}
 		}
 	};

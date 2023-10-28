@@ -112,7 +112,7 @@ int main(const int argc, const char* argv[])
 	hos::Range tRange{config["t1"], config["t2"], config["sampleNum"]};
 
 	// hos::AnalyticalSolver analyticalSolver{hOs, startConds, tRange, "analytical_output.bin"};
-	hos::EulerSolver eulerSolver{hOs, startConds, tRange, "euler_output.bin"};
+	hos::EulerSolverT<float, 2> eulerSolver{hOs, startConds, tRange, "euler_output.bin"};
 	hos::HeunSolver heunSolver{hOs, startConds, tRange, "heun_output.bin"};
 	hos::RK4Solver rk4Solver{hOs, startConds, tRange, "rk4_output.bin"};
 

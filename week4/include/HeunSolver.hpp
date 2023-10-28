@@ -4,21 +4,34 @@
 
 namespace hos
 {
-	class HeunSolver : public Solver
+	template<class T, int N>
+	class HeunSolverT : public SolverT<T, N>
 	{
+		using SolverT<T, N>::deltaT;
+
+		using SolverT<T, N>::startConds_;
+
+		using SolverT<T, N>::tRange_;
+
+		using SolverT<T, N>::diffSystem_;
+
 		void fillSolutions() override;
 
 	public:
 
-		HeunSolver(HarmonicOscillator hOs, Vec2 startConds, Range tRange, const std::string& fileName)
+		HeunSolverT(DiffEqSystem<T, N> diffSystem,
+					vec<T, N> startConds,
+					RangeT<T> tRange,
+					const std::string& fileName)
 		:
-			Solver{hOs, startConds, tRange, fileName}
+			SolverT<T, N>{diffSystem, startConds, tRange, fileName}
 		{}
 	};
 
-	void HeunSolver::fillSolutions()
+	template<class T, int N>
+	void HeunSolverT<T, N>::fillSolutions()
 	{
-		Vec2 prevSolution = startConds_;
+		vec<T, N> prevSolution = startConds_;
 
 		for (float_t t = tRange_.t1; t < tRange_.t2; t += deltaT)
 		{
@@ -28,7 +41,7 @@ namespace hos
 
 			intermediateSolution = prevSolution + deltaT * diffSystem_.f(prevSolution);
 
-			Vec2 currSolution{};
+			vec<T, N> currSolution{};
 
 			// y_{k+1} = y_{k} + deltaT / 2 * (f(y_{k} + f(y*_{k+1}))
 
@@ -39,9 +52,11 @@ namespace hos
 								diffSystem_.f(intermediateSolution) 
 							);
 
-			addSolution(currSolution);
+			SolverT<T, N>::addSolution(currSolution);
 
 			prevSolution = currSolution;
 		}
 	}
+ 
+ 	using HeunSolver = HeunSolverT<float, 2>;
 };
