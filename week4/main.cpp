@@ -29,6 +29,7 @@ std::string getConfigPath(const int argc, const char* argv[])
 	return argv[1];
 }
 
+// use enum?
 const hos::DiffEqSystem<float, 2>& getDifEqSystem(const json& config)
 {
 	const std::string modelName = config["model"];
@@ -51,6 +52,30 @@ const hos::DiffEqSystem<float, 2>& getDifEqSystem(const json& config)
 	return hos::HarmonicOscillator::getDiffEqSystem(config["w"]);
 }
 
+hos::Solver* getSolver(	const std::string& solverName,
+						const hos::DiffEqSystem<float, 2>& diffSystem,
+						const hos::Vec2& startConds,
+						const hos::Range& tRange
+	)
+{
+	if (solverName == "rk4")
+	{
+		return new hos::RK4Solver(diffSystem, startConds, tRange, "rk4_output.bin");
+	}
+
+	if (solverName == "euler")
+	{
+		return new hos::EulerSolver(diffSystem, startConds, tRange, "euler_output.bin");
+	}
+
+	if (solverName == "heun")
+	{
+		return new hos::HeunSolver(diffSystem, startConds, tRange, "heun_output.bin");
+	}
+
+	return new hos::RK4Solver(diffSystem, startConds, tRange, "rk4_output.bin");
+}
+
 int main(const int argc, const char* argv[])
 {
 	const std::string configFileName = getConfigPath(argc, argv);
@@ -66,28 +91,22 @@ int main(const int argc, const char* argv[])
 
 	json config = json::parse(configFileStream);
 
-	const hos::DiffEqSystem<float, 2>& diffSystem = getDifEqSystem(config);
+	auto diffSystem = getDifEqSystem(config);
 
-	hos::Vec2 startConds{config["x0"], config["v0"]};
-	hos::Range tRange{config["t1"], config["t2"], config["sampleNum"]};
+	hos::Vec2 startConds{	config["x0"],
+							config["v0"]};
+	
+	hos::Range tRange{	config["t1"],
+						config["t2"],
+						config["sampleNum"]};
 
-	// hos::AnalyticalSolver analyticalSolver{hOs, startConds, tRange, "analytical_output.bin"};
-	hos::EulerSolver eulerSolver{diffSystem, startConds, tRange, "euler_output.bin"};
-	hos::HeunSolver heunSolver{diffSystem, startConds, tRange, "heun_output.bin"};
-	hos::RK4Solver rk4Solver{diffSystem, startConds, tRange, "rk4_output.bin"};
+	hos::Solver* solver = getSolver(config["solver"],
+									diffSystem,
+									startConds,
+									tRange);
 
-	std::vector<hos::Solver*> solvers;
-
-	// solvers.push_back(&analyticalSolver);
-	solvers.push_back(&eulerSolver);
-	solvers.push_back(&heunSolver);
-	solvers.push_back(&rk4Solver); 
-
-	for (size_t solverId = 0; solverId < solvers.size(); solverId++)
-	{
-		solvers[solverId]->computeSolutions();
-		solvers[solverId]->dumpSolutions();
-	}
+	solver->computeSolutions();
+	solver->dumpSolutions();
 
 	return 0;
 }
