@@ -5,6 +5,7 @@
 #include <fstream>
 #include <vector>
 #include <string>
+#include <utility>
 
 #include <Simulator.hpp>
 #include <DiffEqSystem.hpp>
@@ -17,6 +18,12 @@ namespace hos //harmonic oscillator simulator
 		return cout;
 	}
 
+	struct BufferInfo
+	{
+		const char* startPointer;
+		size_t size;
+	};
+
 	template<class T, int N>
 	class SolverT
 	{
@@ -24,12 +31,13 @@ namespace hos //harmonic oscillator simulator
 
 		SolverT(DiffEqSystem<T, N> diffSystem,
 				vec<T, N> startConds,
-				RangeT<T> tRange,
-				const std::string& fileName);
+				RangeT<T> tRange);
 	
 		void computeSolutions();
 
 		void dumpSolutions() const;
+
+		BufferInfo getBuffer() const;
 
 	protected:
 
@@ -48,21 +56,17 @@ namespace hos //harmonic oscillator simulator
 	private:
 
 		std::vector<vec<T, N>> solutionVec;
-
-		const std::string fileName_; // Seems like it shouldn't belong to Solver class
 	};
 
 	template<class T, int N>
 	SolverT<T, N>::SolverT(DiffEqSystem<T, N> diffSystem,
 			vec<T, N> startConds,
-			RangeT<T> tRange,
-			const std::string& fileName)
+			RangeT<T> tRange)
 	:
 		diffSystem_{diffSystem},
 		startConds_{startConds},
 		tRange_{tRange},
-		deltaT{(tRange.t2 - tRange.t1) / tRange.sampleNum},
-		fileName_{fileName}
+		deltaT{(tRange.t2 - tRange.t1) / tRange.sampleNum}
 	{}
 
 	template<class T, int N>
@@ -83,17 +87,27 @@ namespace hos //harmonic oscillator simulator
 	}
 
 	template<class T, int N>
-	void SolverT<T, N>::dumpSolutions() const
+	BufferInfo SolverT<T, N>::getBuffer() const
 	{
-		std::ofstream fileOutputStream(fileName_, std::ios::binary);
+		return
+		BufferInfo
+		{
+			(const char*) &solutionVec[0],
+			solutionVec.size() * sizeof(solutionVec[0])
+		};
+	}
+
+	void SaveBuffer(const std::string& fileName, BufferInfo bufferInfo)
+	{
+		std::ofstream fileOutputStream(fileName, std::ios::binary);
 		if (!fileOutputStream)
 		{
 			perror("");
-			std::cerr << "Cant open file for binary output: " << fileName_ << '\n';
+			std::cerr << "Cant open file for binary output: " << fileName << '\n';
 			return;
 		}
 
-		fileOutputStream.write((const char*) &solutionVec[0], solutionVec.size() * sizeof(solutionVec[0]));
+		fileOutputStream.write(bufferInfo.startPointer, bufferInfo.size);
 	}
 
 	using Solver = SolverT<float, 2>; 

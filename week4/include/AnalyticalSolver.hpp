@@ -26,10 +26,9 @@ namespace hos
 
 		AnalyticalSolverT(	HarmonicOscillatorT<T> hOs,
 							vec<T, 2> startConds,
-							RangeT<T> tRange,
-							const std::string& fileName)
+							RangeT<T> tRange)
 		:
-			SolverT<T, 2>{hOs, startConds, tRange, fileName},
+			SolverT<T, 2>{hOs, startConds, tRange},
 			w_{hOs.w()}
 		{}
 	};

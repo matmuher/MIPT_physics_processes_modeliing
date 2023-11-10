@@ -14,9 +14,6 @@ using json = nlohmann::json;
 #include <PhysicSystem.hpp>
 #include <DampedSystem.hpp>
 
-// TODO: process multiple config paths
-// solver.exe few_samples_config.json many_samples_config.json 
-
 std::string getConfigPath(const int argc, const char* argv[])
 {
 	const std::string DefaultPath = "config.json";
@@ -29,7 +26,7 @@ std::string getConfigPath(const int argc, const char* argv[])
 	return argv[1];
 }
 
-// use enum?
+// TODO: use enum?
 const hos::DiffEqSystem<float, 2>& getDifEqSystem(const json& config)
 {
 	const std::string modelName = config["model"];
@@ -52,6 +49,7 @@ const hos::DiffEqSystem<float, 2>& getDifEqSystem(const json& config)
 	return hos::HarmonicOscillator::getDiffEqSystem(config["w"]);
 }
 
+// TODO: smart pointer?
 hos::Solver* getSolver(	const std::string& solverName,
 						const hos::DiffEqSystem<float, 2>& diffSystem,
 						const hos::Vec2& startConds,
@@ -60,20 +58,20 @@ hos::Solver* getSolver(	const std::string& solverName,
 {
 	if (solverName == "rk4")
 	{
-		return new hos::RK4Solver(diffSystem, startConds, tRange, "rk4_output.bin");
+		return new hos::RK4Solver(diffSystem, startConds, tRange);
 	}
 
 	if (solverName == "euler")
 	{
-		return new hos::EulerSolver(diffSystem, startConds, tRange, "euler_output.bin");
+		return new hos::EulerSolver(diffSystem, startConds, tRange);
 	}
 
 	if (solverName == "heun")
 	{
-		return new hos::HeunSolver(diffSystem, startConds, tRange, "heun_output.bin");
+		return new hos::HeunSolver(diffSystem, startConds, tRange);
 	}
 
-	return new hos::RK4Solver(diffSystem, startConds, tRange, "rk4_output.bin");
+	return new hos::RK4Solver(diffSystem, startConds, tRange);
 }
 
 int main(const int argc, const char* argv[])
@@ -106,7 +104,8 @@ int main(const int argc, const char* argv[])
 									tRange);
 
 	solver->computeSolutions();
-	solver->dumpSolutions();
+
+	hos::SaveBuffer(config["output"], solver->getBuffer());
 
 	return 0;
 }

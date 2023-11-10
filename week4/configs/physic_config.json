@@ -1,12 +1,13 @@
 {
 	"model" : "Physic",
 	"solver" : "rk4",
+	"output" : "physic.bin",
 
 	"w" : 1,
 	"m" : 1,
 
 	"x0" : 0, 
-	"v0" : 1.5,
+	"v0" : 1.2,
 	
 	"t1" : 0,
 	"t2" : 40,

@@ -21,10 +21,9 @@ namespace hos
 
 		RK4SolverT(	DiffEqSystem<T, N> diffSystem,
 					vec<T, N> startConds,
-					RangeT<T> tRange,
-					const std::string& fileName)
+					RangeT<T> tRange)
 		:
-			SolverT<T, N>{diffSystem, startConds, tRange, fileName}
+			SolverT<T, N>{diffSystem, startConds, tRange}
 		{}
 	};
 

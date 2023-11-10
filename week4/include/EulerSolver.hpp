@@ -21,10 +21,9 @@ namespace hos
 
 		EulerSolverT(DiffEqSystem<T, N> diffSystem,
 					vec<T, N> startConds,
-					RangeT<T> tRange,
-					const std::string& fileName)
+					RangeT<T> tRange)
 		:
-			SolverT<T, N>{diffSystem, startConds, tRange, fileName}
+			SolverT<T, N>{diffSystem, startConds, tRange}
 		{}
 	};
 
@@ -52,9 +51,6 @@ namespace hos
 			vec<T, N> currSolution{};
 
 			currSolution = prevSolution + deltaT * diffSystem_.f(prevSolution, t);
-
-			// currSolution.x = prevSolution.x + deltaT * hOs_.f1(prevSolution);
-			// currSolution.y= prevSolution.y+ deltaT * hOs_.f2(prevSolution);
 
 			SolverT<T, N>::addSolution(currSolution);
 

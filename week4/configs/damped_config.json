@@ -1,6 +1,7 @@
 {
 	"model" : "Damped",
 	"solver" : "rk4",
+	"output" : "damped.bin",
 
 	"m" : 1,
 	"w" : 1,
