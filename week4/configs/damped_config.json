@@ -1,5 +1,6 @@
 {
 	"model" : "Damped",
+	"solver" : "rk4",
 
 	"m" : 1,
 	"w" : 1,

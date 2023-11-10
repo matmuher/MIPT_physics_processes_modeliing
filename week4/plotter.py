@@ -8,48 +8,18 @@ import json
 import matplotlib.pyplot as plt
 import numpy as np
 
-'''
-
-[Usecase]:
-
-	def prepare_x():
-
-	    fig = plt.figure(figsize = (10, 10))
-	    ax = plt.gca()
-
-	    return fig, ax
-
-	with PlotContextManager(prepare_x, "x_plot") as ax:
-
-	    x = np.linspace(0, 100, 100)
-	    y = x*x
-	    ax.plot(x, y, label = 'y = x^2')
-
-'''
-class PlotContextManager:
-
-    def __init__(self, prepare_plot, plot_name):
-
-        self.plot_name = plot_name
-        self.fig, self.ax = prepare_plot()        
-    
-    def __enter__(self):
-        
-        return self.ax
-    
-    def __exit__(self, exc_type, exc_value, exc_tb):
-
-        self.ax.legend()
-        self.fig.savefig(self.plot_name)
-
-def read_solver_data(file_name):
-
-	xv_dtype = np.dtype([('x', np.float32), ('v', np.float32)])
-	xv_data = np.fromfile(file_name, dtype = xv_dtype)
-
-	return xv_data
+# Move to Jupiter
+# Add deltaT as parameter
+# Make report
 
 class MethodData:
+
+	def read_solver_data(file_name):
+
+		xv_dtype = np.dtype([('x', np.float32), ('v', np.float32)])
+		xv_data = np.fromfile(file_name, dtype = xv_dtype)
+
+		return xv_data
 
 	def __init__(self, method_name, binary_file, marker, w):
 
@@ -278,5 +248,50 @@ Read Data
 Plot Data
 
 Save Data
+
+'''
+
+'''
+
+Conig file -> various methods (make it configurable???):
+
+	rk4
+	
+		x_plot
+		energy_plot
+
+	euler
+
+		x_plot
+		energy_plot
+
+	heun
+
+		x_plot
+		energy_plot
+
+
+MethodData is not good creation, as we can have several same methods
+relate to different models
+
+ModelData (Damped)
+|
+|----MethodData (rk4)
+|----MethodData (Heun)
+
+
+ModelData (Harmonic)
+|
+|----MethodData (rk4)
+|----MethodData (Heun)
+
+SessionData = Model + Method => .bin data
+
+SessionPlotter:
+
+	sessionPlotter = SessionPlotter(SessionData)
+
+	sessionPlotter.plot_x(ax)
+	sessionPlotter.plot_energt(ax)
 
 '''
