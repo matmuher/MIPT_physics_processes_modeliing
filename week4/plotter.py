@@ -8,6 +8,8 @@ import json
 import matplotlib.pyplot as plt
 import numpy as np
 
+from config_helper import *
+
 # Move to Jupiter
 
 	# Make a Session class that hold everything that is
@@ -220,7 +222,9 @@ class ConfigInfo:
 
 def run_config(exec_name, config_name):
 
-	subprocess.run([exec_name, config_name]) # TODO: popen	
+	print(get_config_path(config_name))
+
+	subprocess.run([exec_name, get_config_path(config_name)]) # TODO: popen	
 
 '''
 
