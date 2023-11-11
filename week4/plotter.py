@@ -271,6 +271,12 @@ SessionPlotter:
 
 '''
 
+class Style:
+
+	def __init__(self, marker):
+
+		self.marker = marker
+
 class SesInfo:
 
 	def read_data(file_name):
@@ -280,18 +286,15 @@ class SesInfo:
 
 		return xv_data
 
-	def __init__(self, session_name, binary_file, w, marker = 's'):
+	def __init__(self, session_name, config, style):
 
 		self.name = session_name
 
-		self.binary_file = binary_file
-		self.data = SesInfo.read_data(binary_file); 
-
-		self.w = w
+		self.data = SesInfo.read_data(config['output']); 
 
 		self.t_sample_list = range(0, self.data.size)
 
-		self.marker = marker
+		self.marker = style.marker
 
 class SesPlotter:
 

@@ -1,1 +1,1 @@
-{"model": "Damped", "solver": "euler", "output": "damped.bin", "m": 1, "w": 1, "damp_ratio": 0.1, "x0": 1, "v0": 0, "t1": 0, "t2": 40, "sampleNum": 100}
+{"model": "Damped", "solver": "euler", "output": "damped.bin", "m": 1, "w": 1, "damp_ratio": 0.5, "x0": 1, "v0": 0, "t1": 0, "t2": 40, "sampleNum": 100}
