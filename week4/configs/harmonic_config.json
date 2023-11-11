@@ -1,13 +1,13 @@
 {
-	"model" : "Physic",
-	"solver" : "heun",
+	"model" : "Harmonic",
+	"solver" : "rk4",
 	"output" : "harmonic.bin",
 
 	"m" : 1,
 	"w" : 1,
 	
-	"x0" : 0, 
-	"v0" : 1.2,
+	"x0" : 0.2, 
+	"v0" : 0,
 	
 	"t1" : 0,
 	"t2" : 40,

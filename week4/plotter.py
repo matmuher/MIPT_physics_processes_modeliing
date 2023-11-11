@@ -9,6 +9,13 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # Move to Jupiter
+
+	# Make a Session class that hold everything that is
+	# connected with a single executable start
+
+	# Plot data
+	# Binary data
+
 # Add deltaT as parameter
 # Make report
 
@@ -28,7 +35,7 @@ class MethodData:
 		self.marker = marker
 
 		self.w = w
-		self.data = read_solver_data(binary_file);
+		self.data = MethodData.read_solver_data(binary_file);
 
 	def plot_x(self, ax):
 
@@ -211,45 +218,9 @@ class ConfigInfo:
 		self.name = config_name
 		self.path = config_path
 
-def run_config(exec_name, config):
+def run_config(exec_name, config_name):
 
-	subprocess.run([exec_name, config.path]) # TODO popen	
-
-if __name__ == '__main__':
-
-	exec_name = './solver.exe'
-	
-	configs = 	[
-				ConfigInfo('harmonic_oscillator', 'configs/harmonic_config.json'),
-				ConfigInfo('physic_oscillator', 'configs/physic_config.json'),
-				ConfigInfo('damped_oscillator', 'configs/damped_config.json')
-				]
-
-	for config in configs:
-
-		run_config(exec_name, config)
-		plot_solver_data(config)
-
-'''
-
-Что хочется:
-
-чтобы я могу сравнить результаты, которые получается после
-запуска под различными конфигами.
-
-и сохранять это дело с разными именами
-
-Read Data
-
-Plot Data
-
-Read Data
-
-Plot Data
-
-Save Data
-
-'''
+	subprocess.run([exec_name, config_name]) # TODO: popen	
 
 '''
 
@@ -295,3 +266,74 @@ SessionPlotter:
 	sessionPlotter.plot_energt(ax)
 
 '''
+
+class SesInfo:
+
+	def read_data(file_name):
+
+		xv_dtype = np.dtype([('x', np.float32), ('v', np.float32)])
+		xv_data = np.fromfile(file_name, dtype = xv_dtype)
+
+		return xv_data
+
+	def __init__(self, session_name, binary_file, w, marker = 's'):
+
+		self.name = session_name
+
+		self.binary_file = binary_file
+		self.data = SesInfo.read_data(binary_file); 
+
+		self.w = w
+
+		self.t_sample_list = range(0, self.data.size)
+
+		self.marker = marker
+
+class SesPlotter:
+
+	def plot_x(ses_info, ax):
+
+		ax.plot(ses_info.t_sample_list,
+				ses_info.data['x'],
+				label = ses_info.name,
+				marker = ses_info.marker)
+
+	def plot_v(ses_info, ax):
+
+		ax.plot(ses_info.t_sample_list,
+				ses_info.data['v'],
+				label = ses_info.name,
+				marker = ses_info.marker)
+
+	def plot_energy(ses_info, ax):
+
+		ax.plot(	ses_info.t_sample_list,
+
+					ses_info.w * ses_info.w *
+					ses_info.data['x'] * ses_info.data['x'] +
+					ses_info.data['v'] * ses_info.data['v'],
+
+					label = ses_info.name,
+					marker = ses_info.marker)
+
+	def plot_error(ses_info, ses_info_other, ax):
+
+		if ses_info.data.size != ses_info_other.data.size:
+
+			raise Exception(f'Data not matches for {ses_info.name} and {ses_info_other.name}')
+
+		ax.plot(ses_info.t_sample_list,
+
+				np.abs(ses_info.data['x'] - ses_info_other.data['x']),
+			
+				label =  ses_info.name + ' vs ' + ses_info_other.name,
+				marker = ses_info.marker)
+
+	def plot_phase_diagram(ses_info, ax):
+
+		ax.plot(ses_info.data['x'],
+
+				ses_info.data['v'],
+			
+				label = ses_info.name,
+				marker = ses_info.marker)
