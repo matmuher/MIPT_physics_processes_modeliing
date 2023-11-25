@@ -22,7 +22,9 @@ class SesInfo:
 
 		self.data = SesInfo.read_data(config['output']); 
 
-		self.t_sample_list = range(0, self.data.size)
+		self.dt = (config['t2'] - config['t1']) / config['sampleNum']
+		self.t_sample_list = np.arange(0, self.data.size) * self.dt
+								
 
 		self.marker = style.marker
 
