@@ -34,13 +34,13 @@ namespace hos
 
 		for (float_t t = tRange_.t1; t < tRange_.t2; t += deltaT)
 		{
-			vec<T, N> k1 = diffSystem_.f(prevSolution);
+			vec<T, N> k1 = diffSystem_.f(prevSolution, t);
 
-			vec<T, N> k2 = diffSystem_.f(prevSolution + deltaT / 2 * k1);
+			vec<T, N> k2 = diffSystem_.f(prevSolution + deltaT / 2 * k1, t);
 
-			vec<T, N> k3 = diffSystem_.f(prevSolution + deltaT / 2 * k2);
+			vec<T, N> k3 = diffSystem_.f(prevSolution + deltaT / 2 * k2, t);
 
-			vec<T, N> k4 = diffSystem_.f(prevSolution + deltaT * k3);
+			vec<T, N> k4 = diffSystem_.f(prevSolution + deltaT * k3, t);
 
 			// y_{k+1} = y_{k} + deltaT / 2 * (f(y_{k} + f(y*_{k+1}))
 			vec<T, N> currSolution = prevSolution + deltaT * (k1 + 2 * k2 + 2 * k3 + k4) / 6;
