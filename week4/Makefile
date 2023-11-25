@@ -1,19 +1,22 @@
-all: start
+all: solver.exe
 
-solver.exe: main.cpp
-	g++ main.cpp -o solver.exe -I./include -std=c++11
+SRC_DIR := ./src
+INC_DIR := ./include
 
-start: solver.exe
+SRC     := $(shell find $(SRC_DIR)/*.cpp)
+HEADERS := $(shell find $(INC_DIR)/*.hpp)
 
-	python3.10 plotter.py
+
+solver.exe: $(SRC) $(HEADERS)
+	g++ $(SRC) -o solver.exe -I$(INC_DIR) -std=c++11 -ggdb
 
 clean: clean_meta clean_bin
-	rm *.exe *.o
-	
+	rm *.exe
+
 clean_meta:
 
 	rm tmp -rf *.svg
 
 clean_bin:
 
-	rm *.bin
+	rm -rf *.bin

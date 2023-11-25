@@ -13,6 +13,7 @@ using json = nlohmann::json;
 #include <HarmonicSystem.hpp>
 #include <PhysicSystem.hpp>
 #include <DampedSystem.hpp>
+#include <HarmonicDrivenSystem.hpp>
 
 std::string getConfigPath(const int argc, const char* argv[])
 {
@@ -27,6 +28,7 @@ std::string getConfigPath(const int argc, const char* argv[])
 }
 
 // TODO: use enum?
+// TODO: DSL?
 const hos::DiffEqSystem<float, 2>& getDifEqSystem(const json& config)
 {
 	const std::string modelName = config["model"];
@@ -43,7 +45,21 @@ const hos::DiffEqSystem<float, 2>& getDifEqSystem(const json& config)
 
 	if (modelName == "Damped")
 	{
-		return hos::DampedOscillator::getDiffEqSystem(config["w"], config["damp_ratio"]);
+		return hos::DampedOscillator::getDiffEqSystem(
+														config["w"],
+														config["damp_ratio"]
+													);
+	}
+
+	if (modelName == "HarmonicDriven")
+	{
+		return hos::HarmonicDrivenOscillator::getDiffEqSystem(
+														config["w"],
+														config["damp_ratio"],
+														config["m"],
+														config["A"],
+														config["Omega"]
+														);
 	}
 
 	return hos::HarmonicOscillator::getDiffEqSystem(config["w"]);

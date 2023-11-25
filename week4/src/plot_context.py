@@ -30,5 +30,4 @@ class PlotContextManager:
     
     def __exit__(self, exc_type, exc_value, exc_tb):
 
-        self.ax.legend()
         self.fig.savefig(self.plot_name)

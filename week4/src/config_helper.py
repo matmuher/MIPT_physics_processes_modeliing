@@ -1,5 +1,12 @@
 import os
 import json
+import subprocess
+
+def run_config(exec_name, config_name):
+
+    print(get_config_path(config_name))
+
+    subprocess.run([exec_name, get_config_path(config_name)]) # TODO: popen 
 
 def get_config_path(config_name):
 
