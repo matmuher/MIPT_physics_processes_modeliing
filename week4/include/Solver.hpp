@@ -41,7 +41,7 @@ namespace hos //harmonic oscillator simulator
 
 	protected:
 
-		DiffEqSystem<T, N> diffSystem_;
+		DiffEqSystem<T, N> diffSystem_; // TODO: NumericSolver
 		const vec<T, N> startConds_;
 		const RangeT<T> tRange_;
 
@@ -83,18 +83,16 @@ namespace hos //harmonic oscillator simulator
 	template<class T, int N>
 	void SolverT<T, N>::addSolution(vec<T, N> solution)
 	{
-		solutionVec.push_back(solution); // vs use solutionVec[i] = solution?
+		solutionVec.push_back(solution);
 	}
 
 	template<class T, int N>
 	BufferInfo SolverT<T, N>::getBuffer() const
 	{
-		return
-		BufferInfo
-		{
-			(const char*) &solutionVec[0],
-			solutionVec.size() * sizeof(solutionVec[0])
-		};
+		return BufferInfo	{
+								(const char*) &solutionVec[0],
+								solutionVec.size() * sizeof(solutionVec[0])
+							};
 	}
 
 	void SaveBuffer(const std::string& fileName, BufferInfo bufferInfo)
@@ -109,6 +107,8 @@ namespace hos //harmonic oscillator simulator
 
 		fileOutputStream.write(bufferInfo.startPointer, bufferInfo.size);
 	}
+
+
 
 	using Solver = SolverT<float, 2>; 
 };

@@ -1,6 +1,8 @@
 #pragma once
 
 #include <array>
+#include <stdexcept>
+
 #include <linalg.h>
 
 #include <Simulator.hpp>
@@ -24,7 +26,7 @@ namespace hos //harmonic oscillator simulator
 			else
 			{
 				std::cerr << "Cant apply to " << k << "th func\n";
-				// TODO: throw
+				throw std::out_of_range("Out of function vecotr");
 			}
 		}
 
@@ -37,7 +39,7 @@ namespace hos //harmonic oscillator simulator
 			else
 			{
 				std::cerr << "Cant apply to " << k << "th func\n";
-				// TODO; throw
+				throw std::out_of_range("Out of function vecotr");
 			}
 		}
 	};

@@ -1,107 +1,56 @@
-# Harmonic Oscillator Modelling
+# Oscillator modelling
 
-## What do you do here?
+## What?
 
-Research numerical methods of solving system of 1st order differential equations.
+This is project for tasks of numerical simulation course (MIPT).
 
-In this research next methods are compared:
+Here we numerically simulate systems, that are set by differential equations.
 
-+ [Analytical solution](https://en.wikipedia.org/wiki/Harmonic_oscillator)
-+ [Euler method](https://en.wikipedia.org/wiki/Euler_method)
-+ [Heun method](https://en.wikipedia.org/wiki/Heun%27s_method)
+## Methods
 
-In plots below research the same time interval [0, 7] and consider $w = 1$.
+Next methods for solving differential equations are used:
 
-Few samples - we divide interval into 10 parts.
++ Heun
++ Euler
++ RK4
 
-Many samples - into 100.
+Comparision of this methods with analytical solution can be found here: [report for solvers comparison](solvers.md)
 
-## Research solution
+## Systems
 
-### Many samples
-![](pictures/many_samples_solution.svg)
+Next systems are considered:
 
-### Few samples
++ harmonic oscillator
++ damped oscillator
+  + [Report about damped oscillator](damped.md)
++ damped driven oscillator
+  + [General driven oscillator overview](driven.md)
+  + [AFC for driven oscillator](AFC.md)
++ Double pendulum oscillator (soon...)
++ Kapitsy oscillator (soon...)
 
-![](pictures/few_samples_solution.svg)
+## Architecture
 
+Project consists of 2 parts:
 
-Euler method and Heun method are iterative processes that are used to get approximate solution.
+1. Simulator
 
-As you can see on the pictures they do really approximate solution, but with an error.
+As simulating is computationally expensive task, simulator is written in C++.
 
-Euler method increases amplitude of oscillations.
-This fact can be observed better if we plot system energy. It'll be done later.
+Features:
 
-## Research solution error
++ Easy to add new models and solvers (OOP design)
++ Easy to switch between float, double etc type values (templates)
++ Configurable from json file
 
+Hierchahy is rather unstable at the moment. I'll dump it in the winter vacations.
 
-### Many samples
-![](pictures/many_samples_error.svg)
+2. Analyizer
 
-### Few samples
+Core modules for plotting and working with config files are moved to python modules. But analyze process is held in jupiter notebook, as it allows faster iterations.
 
-![](pictures/few_samples_error.svg)
-
-This zeros of Euler's method error occured as initial solution is periodic function. So sometimes initial solution intersects with Euler's solution, but that's just a coincidence.
-
-Also we can notice how error depends on samples num. In Few samples case error is ~32 times bigger for Euler's solution.
-
-## Research energy
-
-### Many samples
-![](pictures/many_samples_energy.svg)
-
-### Few samples
-
-![](pictures/few_samples_energy.svg)
-
-Plot demonstrates that energy in the system increases.
-
-But we model conservative system, so it's only called by error of Euler's method.
-
-So it's not a right decision to model conservative systems with Euler's method.
-
-## Research phase portrait
-
-### Many samples
-
-![](pictures/many_samples_phase_diagram.svg)
-
-### Few samples
-
-![](pictures/few_samples_phase_diagram.svg)
-
-Phase portrait of conservative system should look like a circle. But as Euler's method ruins energy balance we see unrolling spiral.
-
-
-# More detailed review of Heun's method
-
-Plots above can give feeling that Heun's method doesn't corrupt conservative law for the system. But it's too early to claim.
-
-If we plot energy without euler's method we can see:
-
-![](pictures/many_samples_energy_only_heun.svg)
-
-![](pictures/few_samples_energy_only_heun.svg)
-
-
-Energy increases in the system according to Heun's method. But we see that this increase is real small. It needs an additional research to find out whether it is caused by rounding error or not. [Summation method](https://en.wikipedia.org/wiki/Kahan_summation_algorithm) can be applied.
-
-## Research domain of methods
-
-In work
-
-## Conclusions
-
-For understanding results let's consider one more plot:
-
-![](pictures/how_methods_deal_with_concave.svg)
-
-This plots gives us answer. As initial solution function concaves greatly $A * sin(x) + b * cos(x)$ Euler's method does bad job.
-
-Let's consider time samples with numbers 0 and 1. We will investigate solution for v. Initial value is 1. Original solution's v derivative smoothly decreases. But Euler's method take into account only derivative's value at start of time interval. And considers it constant for the whole interval. That's why Euler's solution is not goes enough down when we compare it with original solution in the end of interval.
-
-Thus as velocity doesn't decrease properly it seems like energy in the system increases. That is proofed by plots in 'Research energy' section.
-
-Otherwise, in Heun's method case it goes better. That's because Heun's method consider that function can concave. So the computed derivative depends on original derivative in both ends of time interval.
+It's used to research system's features:
++ Veloctiy and coordinates
++ Energy
++ AFC
++ Phase diagrams

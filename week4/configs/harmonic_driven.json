@@ -1,1 +1,1 @@
-{"model": "HarmonicDriven", "solver": "rk4", "output": "harmonic_driven.bin", "m": 1, "w": 1, "damp_ratio": 0.2, "A": 1, "Omega": 3.95, "x0": 2, "v0": 0, "t1": 0, "t2": 400, "sampleNum": 2000}
+{"model": "HarmonicDriven", "solver": "rk4", "output": "harmonic_driven.bin", "m": 1, "w": 1, "damp_ratio": 0.05, "A": 1, "Omega": 3.95, "x0": 2, "v0": 0, "t1": 0, "t2": 400, "sampleNum": 2000}
