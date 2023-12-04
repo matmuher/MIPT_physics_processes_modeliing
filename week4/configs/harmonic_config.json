@@ -1,0 +1,15 @@
+{
+	"model" : "Harmonic",
+	"solver" : "rk4",
+	"output" : "harmonic.bin",
+
+	"m" : 1,
+	"w" : 1,
+	
+	"x0" : 1.6, 
+	"v0" : 0,
+	
+	"t1" : 0,
+	"t2" : 40,
+	"sampleNum" : 100
+}

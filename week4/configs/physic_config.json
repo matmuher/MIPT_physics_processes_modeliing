@@ -1,0 +1,15 @@
+{
+	"model" : "Physic",
+	"solver" : "rk4",
+	"output" : "physic.bin",
+
+	"w" : 1,
+	"m" : 1,
+
+	"x0" : 1.6, 
+	"v0" : 0,
+	
+	"t1" : 0,
+	"t2" : 40,
+	"sampleNum" : 100
+}

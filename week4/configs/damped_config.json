@@ -1,0 +1,16 @@
+{
+	"model" : "Damped",
+	"solver" : "rk4",
+	"output" : "damped.bin",
+
+	"m" : 1,
+	"w" : 1,
+	"damp_ratio" : 0.2,
+
+	"x0" : 0.05, 
+	"v0" : 0,
+
+	"t1" : 0,
+	"t2" : 40,
+	"sampleNum" : 100
+}
